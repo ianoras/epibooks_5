@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Form, Container, Row, Col } from 'react-bootstrap';
+import SingleBook from './components/SingleBook';
 
 const AllTheBooks = () => {
   const [books, setBooks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Cambia il percorso per puntare al file JSON corretto (ad esempio: public/fantasy.json)
@@ -11,21 +14,32 @@ const AllTheBooks = () => {
       .catch((error) => console.error('Errore nel caricamento dei dati:', error));
   }, []);
 
+  // Filtra i libri in base alla ricerca
+  const filteredBooks = books.filter((book) =>
+    book.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="container mt-5">
-      <div className="row">
-        {books.map((book) => (
-          <div className="col-md-3 mb-4" key={book.asin}>
-            <div className="card">
-              <img src={book.img} className="card-img-top" alt={book.title} />
-              <div className="card-body">
-                <h5 className="card-title">{book.title}</h5>
-              </div>
-            </div>
-          </div>
+    <Container className="mt-5">
+      <Form className="mb-4">
+        <Form.Group>
+          <Form.Control
+            type="text"
+            placeholder="Cerca un libro..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </Form.Group>
+      </Form>
+
+      <Row>
+        {filteredBooks.map((book) => (
+          <Col xs={12} md={4} lg={3} className="mb-4" key={book.asin}>
+            <SingleBook book={book} />
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 
