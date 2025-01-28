@@ -1,15 +1,22 @@
-import { useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { useState, useContext } from 'react';
+import { Card } from 'react-bootstrap';
 import CommentArea from './CommentArea';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const SingleBook = ({ book }) => {
   const [selected, setSelected] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <div className="mb-4">
       <Card 
         onClick={() => setSelected(!selected)}
-        style={{ cursor: 'pointer', border: selected ? '3px solid red' : 'none' }}
+        style={{ 
+          cursor: 'pointer', 
+          border: selected ? '3px solid red' : 'none',
+          backgroundColor: theme === 'dark' ? '#333' : '#fff',
+          color: theme === 'dark' ? '#fff' : '#000'
+        }}
       >
         <Card.Img variant="top" src={book.img} alt={book.title} />
         <Card.Body>

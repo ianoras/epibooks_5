@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Container, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import SingleBook from './components/SingleBook';
+import { ThemeContext } from './contexts/ThemeContext';
 
-const AllTheBooks = () => {
+const AllTheBooks = ({ searchQuery }) => {
   const [books, setBooks] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     // Cambia il percorso per puntare al file JSON corretto (ad esempio: public/fantasy.json)
@@ -14,24 +15,19 @@ const AllTheBooks = () => {
       .catch((error) => console.error('Errore nel caricamento dei dati:', error));
   }, []);
 
-  // Filtra i libri in base alla ricerca
+  // Filtra i libri in base alla ricerca che ora arriva dalle props
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <Container className="mt-5">
-      <Form className="mb-4">
-        <Form.Group>
-          <Form.Control
-            type="text"
-            placeholder="Cerca un libro..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </Form.Group>
-      </Form>
-
+    <Container 
+      className="mt-5"
+      style={{
+        backgroundColor: theme === 'dark' ? '#222' : '#fff',
+        color: theme === 'dark' ? '#fff' : '#000',
+      }}
+    >
       <Row>
         {filteredBooks.map((book) => (
           <Col xs={12} md={4} lg={3} className="mb-4" key={book.asin}>

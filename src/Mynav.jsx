@@ -1,10 +1,18 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { useContext } from 'react';
+import { Navbar, Nav, Form, Container, Button } from 'react-bootstrap';
+import { ThemeContext } from './contexts/ThemeContext';
 
-const MyNav = () => {
+const MyNav = ({ searchQuery, setSearchQuery }) => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar 
+      bg={theme} 
+      variant={theme} 
+      expand="lg" 
+      sticky="top"
+      className={`transition-colors ${theme === 'dark' ? 'border-bottom' : ''}`}
+    >
       <Container>
         <Navbar.Brand href="#home">EpiBooks</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -14,6 +22,21 @@ const MyNav = () => {
             <Nav.Link href="#about">About</Nav.Link>
             <Nav.Link href="#browse">Browse</Nav.Link>
           </Nav>
+          <Form className="d-flex me-2">
+            <Form.Control
+              type="search"
+              placeholder="Cerca un libro..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={theme === 'dark' ? 'bg-dark text-light' : ''}
+            />
+          </Form>
+          <Button 
+            variant={theme === 'dark' ? 'light' : 'dark'}
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
