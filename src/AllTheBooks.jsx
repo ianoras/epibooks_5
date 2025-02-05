@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import SingleBook from './components/SingleBook';
 import { ThemeContext } from './contexts/ThemeContext';
 
-const AllTheBooks = ({ searchQuery }) => {
+const AllTheBooks = ({ searchQuery, selectedBook, setSelectedBook }) => {
   const [books, setBooks] = useState([]);
   const { theme } = useContext(ThemeContext);
 
@@ -30,8 +30,12 @@ const AllTheBooks = ({ searchQuery }) => {
     >
       <Row>
         {filteredBooks.map((book) => (
-          <Col xs={12} md={4} lg={3} className="mb-4" key={book.asin}>
-            <SingleBook book={book} />
+          <Col xs={12} md={6} lg={4} className="mb-4" key={book.asin}>
+            <SingleBook 
+              book={book} 
+              selectedBook={selectedBook}
+              setSelectedBook={setSelectedBook}
+            />
           </Col>
         ))}
       </Row>

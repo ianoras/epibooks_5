@@ -1,13 +1,16 @@
 import React, { useState, useContext } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import MyNav from './Mynav';
 import Myfooter from './Myfooter';
 import Welcome from './Welcome';
 import AllTheBooks from './AllTheBooks';
+import CommentArea from './components/CommentArea';
 import { ThemeProvider, ThemeContext } from './contexts/ThemeContext';
 
 // Creiamo un componente wrapper per applicare il tema
 const AppContent = ({ searchQuery, setSearchQuery }) => {
   const { theme } = useContext(ThemeContext);
+  const [selectedBook, setSelectedBook] = useState('');
 
   return (
     <div 
@@ -19,7 +22,20 @@ const AppContent = ({ searchQuery, setSearchQuery }) => {
     >
       <MyNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Welcome />
-      <AllTheBooks searchQuery={searchQuery} />
+      <Container fluid>
+        <Row>
+          <Col xs={12} md={8}>
+            <AllTheBooks 
+              searchQuery={searchQuery} 
+              selectedBook={selectedBook}
+              setSelectedBook={setSelectedBook}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <CommentArea asin={selectedBook} />
+          </Col>
+        </Row>
+      </Container>
       <Myfooter />
     </div>
   );
